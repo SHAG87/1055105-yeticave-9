@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Андрей Шевляков](https://up.htmlacademy.ru/php/9/user/1055105).
-* Наставник: [Евгений Шумейко] (https://htmlacademy.ru/profile/id910113).
+* Наставник: [Евгений Шумейко](https://htmlacademy.ru/profile/id910113).
 
 ---
 
