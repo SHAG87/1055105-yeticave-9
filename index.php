@@ -116,8 +116,8 @@ $announ=[
                     <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$val['name']?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
-                            <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$val['price']?><b class="rub">р</b></span>
+                            <span class="lot__amount">Стартовая цена <?=$val['price']?> </span>
+                            <span class="lot__cost">Цена<b class="rub">р</b></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
