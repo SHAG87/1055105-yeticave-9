@@ -43,8 +43,8 @@ $announ = [
 function format_sum ($value)
 {
     $number = ceil($value);
-    $price = number_format($number, 0, ',', " ");
-    return $price .= " &#8381";
+    $price = number_format($number, 0, ',', " ") . " ₽";
+    return $price;
 }
 ?>
 <!DOCTYPE html>
