@@ -99,9 +99,9 @@ function format_sum ($value)
             <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
             <ul class="promo__list">
                 <!--заполните этот список из массива категорий-->
-                <?php foreach ($categories as $key=>$val):?>
+                <?php foreach ($categories as $category_name):?>
                     <li class="promo__item promo__item--boards">
-                        <a class="promo__link" href="pages/all-lots.html"><?=$val?></a>
+                        <a class="promo__link" href="pages/all-lots.html"><?=$category_name?></a>
                     </li>
                 <?php endforeach;?>
             </ul>
@@ -112,7 +112,7 @@ function format_sum ($value)
             </div>
             <ul class="lots__list">
                 <!--заполните этот список из массива с товарами-->
-                <?php foreach ($announ as $key=>$val):?>
+                <?php foreach ($announ as $key => $val):?>
                     <li class="lots__item lot">
                         <div class="lot__image">
                             <img src="<?=$val['url']?>" width="350" height="260" alt="">
@@ -141,9 +141,9 @@ function format_sum ($value)
     <nav class="nav">
         <ul class="nav__list container">
             <!--заполните этот список из массива категорий-->
-            <?php foreach ($categories as $key=>$val):?>
+            <?php foreach ($categories as $category_name):?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=$val?></a>
+                    <a href="pages/all-lots.html"><?=$category_name?></a>
                 </li>
             <?php endforeach;?>
         </ul>
