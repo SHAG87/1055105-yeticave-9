@@ -30,7 +30,7 @@
                             <span class="lot__cost">Цена <?=format_sum(esc($val['price']))?></span>
                         </div>
                         <div class="lot__timer timer">
-                            12:23
+                            <?=sec_remaining() ?>
                         </div>
                     </div>
                 </div>
