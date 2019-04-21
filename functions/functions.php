@@ -32,15 +32,19 @@ function esc_strong (string $string) : string
     return htmlentities($string);
 }
 
+/**
+ * Возвращаем время до полуночи в формате HH:MM
+ * @return string
+ */
+
+/**
+ * Получаем оставшееся время до полуночи в формате "HH:MM"
+ * @return string
+ */
 function sec_remaining () : string
 {
     $newdaysec = strtotime("tomorrow midnight") - time();
     $hours = floor($newdaysec/3600);
-    $minutes = floor(($newdaysec / 3600) / 60);
-    if ($hours <1) {
-        return print ("<div class=timer--finishing>$hours : $minutes</div>");
-    }
-    else {
-        return print ("$hours : $minutes");
-    }
+    $minutes = floor(($newdaysec % 3600)/60);
+    return "$hours : $minutes";
 }
