@@ -53,5 +53,5 @@ function last_hour () : bool
     $now = time();
     $time_is_running_out = strtotime("tomorrow midnight");
     $diff = $time_is_running_out - $now;
-    return intval(date('H', $diff)) >= 19;
+    return intval(date('H', $diff)) >= 1;
 }
