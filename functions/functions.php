@@ -33,29 +33,28 @@ function esc_strong (string $string) : string
 }
 
 /**
- * Получаем оставшееся время до полуночи в формате "HH:MM"
+ * Получаем оставшееся время до закрытия лота в формате "HH:MM"
  * @return string
  */
 function get_time_to_timer () : string
 {
-    $newdaysec = strtotime("tomorrow midnight") - time();
-    $hours = floor($newdaysec/3600);
-    $minutes = floor(($newdaysec % 3600)/60);
-    return "$hours : $minutes";
+    $now = time();
+    $time_is_running_out = strtotime("tomorrow midnight");
+    $diff = $time_is_running_out - $now;
+    return date('H:i', $diff);
 }
 
 /**
- * Проверяем остался ли час до полуночи
+ * Проверяем остался ли час до закрытия лота
  * @return bool
  */
 function last_hour () : bool
 {
-    $newdaysec = strtotime("tomorrow midnight") - time();
-    $hours = floor($newdaysec/3600);
-    if ($hours>=1){
-            return True;
+    $now = time();
+    $time_is_running_out = strtotime("tomorrow midnight");
+    $diff = $time_is_running_out - $now;
+    if (date('H', $diff)>=1){
+    return true;
     }
-    else {
-        return False;
-    }
+    return false;
 }

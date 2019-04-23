@@ -32,7 +32,7 @@
                         <?php if (last_hour()): ?>
                             <div class="lot__timer timer"><?=get_time_to_timer() ?></div>
                         <?php else: ?>
-                            <div class=timer--finishing><?=get_time_to_timer() ?></div>")
+                            <div class=timer--finishing><?=get_time_to_timer() ?></div>
                         <?php endif; ?>
                     </div>
                 </div>
