@@ -4,7 +4,7 @@ $user_name = 'Andrey';
 $categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 $announ = [
     [
-        'name' => '<script>alert("2014 Rossignol District Snowboard")</script>',
+        'name' => '2014 Rossignol District Snowboard',
         'cat' => 'Доски и лыжи',
         'price' => 10999,
         'url' => 'img/lot-1.jpg'
