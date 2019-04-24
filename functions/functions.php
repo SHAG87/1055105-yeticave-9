@@ -31,3 +31,27 @@ function esc_strong (string $string) : string
 {
     return htmlentities($string);
 }
+
+/**
+ * Получаем оставшееся время до закрытия лота в формате "HH:MM"
+ * @return string
+ */
+function get_time_to_timer (string $end_time) : string
+{
+    $now = time();
+    $time_is_running_out = strtotime($end_time);
+    $diff = $time_is_running_out - $now;
+    return date('H:i', $diff);
+}
+
+/**
+ * Проверяем остался ли час до закрытия лота
+ * @return bool
+ */
+function last_hour (string $end_time) : bool
+{
+    $now = time();
+    $time_is_running_out = strtotime($end_time);
+    $diff = $time_is_running_out - $now;
+    return date('H', $diff) < 1;
+}
