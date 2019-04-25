@@ -4,62 +4,53 @@ CREATE DATABASE yeticave
 
 USE yeticave;
 
-CREATE TABLE categories (
-    id      INT AUTO_INCREMENT PRIMARY KEY,
-    name    CHAR(128),
-    code    CHAR(64)
+CREATE TABLE categories
+(
+    id   TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(128) NOT NULL UNIQUE,
+    code VARCHAR(64)  NOT NULL UNIQUE
 );
 
-CREATE TABLE lots (
-    id       	INT AUTO_INCREMENT PRIMARY KEY,
-    start_time 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    name    	CHAR(128) NOT NULL,
-    comment 	CHAR(128),
-    img_url		CHAR(128),
-    price 		Float,
-    end_time	TIMESTAMP,
-    bet_step	Float,
-    user_id  	INT,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    winner_id   INT,
+CREATE TABLE users
+(
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email       VARCHAR(128) NOT NULL UNIQUE,
+    user_name   VARCHAR(128) NOT NULL,
+    password    VARCHAR(128) NOT NULL,
+    avatar      VARCHAR(512),
+    contact     VARCHAR(256) NOT NULL,
+    INDEX user_email (email)
+);
+
+CREATE TABLE lots
+(
+    id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    start_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    name        VARCHAR(256) NOT NULL UNIQUE,
+    description text         NOT NULL,
+    img_url     VARCHAR(512) NOT NULL,
+    price       INT UNSIGNED NOT NULL,
+    end_time    TIMESTAMP    NOT NULL,
+    bet_step    INT UNSIGNED NOT NULL,
+    owner_id    INT  UNSIGNED        NOT NULL,
+    winner_id   INT UNSIGNED,
+    category_id TINYINT UNSIGNED      NOT NULL,
     FOREIGN KEY (winner_id) REFERENCES users(id),
-    categori_id INT,
-    FOREIGN KEY (categori_id) REFERENCES categories(id)
+    FOREIGN KEY (owner_id) REFERENCES users(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    INDEX lot_index (name, category_id)
+
 );
 
-CREATE TABLE rate (
-    id       	INT AUTO_INCREMENT PRIMARY KEY,
-    start_time 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    bet_sum		Float,
-    user_id     INT,
+CREATE TABLE bets
+(
+    id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    bet_sum    INT NOT NULL,
+    user_id    INT UNSIGNED NOT NULL,
+    lot_id     INT UNSIGNED NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    lot_id      INT,
-    FOREIGN KEY (lot_id) REFERENCES lots(id)
-);
-
-CREATE TABLE users (
-    id INT 		AUTO_INCREMENT PRIMARY KEY,
-    dt_add 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    email 		CHAR(128) NOT NULL UNIQUE,
-    user_name	CHAR (128) NOT NULL UNIQUE,
-    pass 		CHAR (128) NOT NULL,
-    avatar 		CHAR(128),
-    contact		CHAR(128),
-    lot_id      INT,
     FOREIGN KEY (lot_id) REFERENCES lots(id),
-    rate_id     INT,
-    FOREIGN KEY (rate_id) REFERENCES rate(id)
+    INDEX user_lot (user_id, lot_id)
 );
-
-CREATE UNIQUE INDEX email ON users(email);
-CREATE UNIQUE INDEX user_name ON users(user_name);
-CREATE UNIQUE INDEX name_categori ON categories(name);
-CREATE UNIQUE INDEX name_lot ON lots(name);
-
-INSERT INTO categories
-(name, code) VALUES ('Доски и лыжи','boards'),
-('Крепления','attachmment'),
-('Ботинки','boots'),
-('Одежда','clothing'),
-('Инструменты','tools'),
-('Разное','other');
