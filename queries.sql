@@ -11,8 +11,8 @@ INSERT INTO categories
                     ('Разное','other');
 
 INSERT INTO users (email, user_name, password, contact) VALUES
-                ('Vladimir@mail.ru','Vladimir','password',001),
-                ('Dmitry@yandex.ru','Dima','qw123qw',002);
+('Vladimir@mail.ru','Vladimir','password',001),
+('Dmitry@yandex.ru','Dima','qw123qw',002);
 
 INSERT INTO lots
 (name, category_id, price, img_url, owner_id, description, end_time, bet_step) VALUES
@@ -31,7 +31,7 @@ INSERT INTO bets
 /*
 получить все категории
  */
-SELECT * FROM categories
+SELECT * FROM categories;
 
 /*получить самые новые, открытые лоты. Каждый лот должен включать название,
 стартовую цену, ссылку на изображение, ЦЕНУ, название категории;
@@ -40,7 +40,7 @@ SELECT * FROM categories
 SELECT l.name, price, img_url, c.NAME, bet_sum FROM lots l
 JOIN bets b ON b.lot_id=l.id
 JOIN categories c ON l.category_id = c.id
-WHERE winner_id IS NULL ORDER BY l.start_time DESC;
+WHERE (winner_id IS NULL) AND (end_time < NOW()) ORDER BY l.start_time DESC;
 
 /*
 показать лот по его id. Получите также название категории, к которой принадлежит лот;
