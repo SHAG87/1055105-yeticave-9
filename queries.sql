@@ -38,9 +38,9 @@ SELECT * FROM categories;
 Здесь я объединил 3 таблицы
  */
 SELECT l.name, price, img_url, c.NAME, bet_sum FROM lots l
-                                                        JOIN bets b ON b.lot_id=l.id
-                                                        JOIN categories c ON l.category_id = c.id
-WHERE winner_id IS NULL ORDER BY l.start_time DESC;
+JOIN bets b ON b.lot_id=l.id
+JOIN categories c ON l.category_id = c.id
+WHERE (winner_id IS NULL) AND (end_time < NOW()) ORDER BY l.start_time DESC;
 
 /*
 показать лот по его id. Получите также название категории, к которой принадлежит лот;
