@@ -53,9 +53,9 @@
     <nav class="nav">
         <ul class="nav__list container">
             <!--Выводим категории списком-->
-            <?php foreach ($categories as $category_name):?>
+            <?php foreach ($categories as $category):?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=esc_strong($category_name)?></a>
+                    <a href="pages/all-lots.html"><?=esc_strong($category['name'])?></a>
                 </li>
             <?php endforeach;?>
         </ul>
