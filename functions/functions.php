@@ -57,15 +57,24 @@ function last_hour (string $end_time) : bool
 }
 
 /*
- * Запрос на получение списка категорий
+ *Соединяемся с БД
  */
-function get_categories () : array
+function get_link ()
 {
     $link = mysqli_connect("1055105-yeticave-9", "root", "","yeticave");
     mysqli_set_charset($link, "utf8");
     if ($link == false){
         print("Ошибка подключения: " .mysqli_connect_error());}
-    else {
+    else return $link;
+    mysqli_close($link);
+}
+
+/*
+ * Запрос на получение списка категорий
+ */
+function get_categories () : array
+{
+        $link = get_link();
         $sql = "SELECT * FROM categories";
         $result = mysqli_query($link, $sql);
 
@@ -75,9 +84,7 @@ function get_categories () : array
             $error = mysqli_error($link);
             print("Ошибка MySQL: " . $error);
         }
-    }
     return $categories;
-
 }
 
 
@@ -86,17 +93,11 @@ function get_categories () : array
  */
 function get_lots() : array
 {
-    $link = mysqli_connect("1055105-yeticave-9", "root", "", "yeticave");
-    mysqli_set_charset($link, "utf8");
-    if ($link == false) {
-        print("Ошибка подключения: " . mysqli_connect_error());
-    } else {
-        $sql_lots = 'SELECT img_url, category_id, l.name, price, c.NAME FROM lots l '
-            . 'JOIN categories c ON l.category_id = c.id';
-        if ($res = mysqli_query($link, $sql_lots)) {
-            $lots = mysqli_fetch_all($res, MYSQLI_ASSOC);
-        }
+    $link = get_link();
+    $sql_lots = 'SELECT img_url, category_id, l.name, price, c.NAME FROM lots l '
+        . 'JOIN categories c ON l.category_id = c.id';
+    if ($res = mysqli_query($link, $sql_lots)) {
+        $lots = mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
     return $lots;
-
 }
