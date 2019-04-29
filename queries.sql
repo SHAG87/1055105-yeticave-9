@@ -46,7 +46,7 @@ WHERE (winner_id IS NULL) AND (end_time < NOW()) ORDER BY l.start_time DESC;
 показать лот по его id. Получите также название категории, к которой принадлежит лот;
  */
 SELECT * FROM lots l
-                  JOIN categories c ON l.category_id = c.id
+JOIN categories c ON l.category_id = c.id
 WHERE l.id = 1;
 
 /*

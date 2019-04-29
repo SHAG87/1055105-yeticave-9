@@ -55,3 +55,42 @@ function last_hour (string $end_time) : bool
     $diff = $time_is_running_out - $now;
     return date('H', $diff) < 1;
 }
+
+/*
+ *Соединяемся с БД
+ */
+function get_link ()
+{
+    $link = mysqli_connect("1055105-yeticave-9", "root", "","yeticave");
+    mysqli_set_charset($link, "utf8");
+    if ($link !== false){
+        return $link;
+    }
+        print("Ошибка подключения: " .mysqli_connect_error());
+        mysqli_close($link);
+
+}
+
+/*
+ * Запрос на получение списка категорий
+ */
+function get_categories () : array
+{
+        $sql = "SELECT * FROM categories";
+        $result = mysqli_query(get_link(), $sql);
+        $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $categories;
+}
+
+
+/*
+ * Запрос на получение списка лотов (убрал пока условия, чтобы главная страница отображалась полностью, для наглядности)
+ */
+function get_lots() : array
+{
+    $sql = 'SELECT img_url, category_id, l.name, price, c.NAME FROM lots l '
+        . 'JOIN categories c ON l.category_id = c.id';
+    $result = mysqli_query(get_link(), $sql);
+    $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $lots;
+}
