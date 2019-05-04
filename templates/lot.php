@@ -1,5 +1,5 @@
 <section class="lot-item container">
-    <h2><?=esc($lot_name)?></h2>
+    <h2><?=$lot_name?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
@@ -10,16 +10,16 @@
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
-                <div class="lot__timer timer <?=last_hour("tomorrow midnight") ? 'timer--finishing' : '' ?>">
-                    <?=get_time_to_timer("tomorrow midnight") ?>
+                <div class="lot__timer timer <?=last_hour($end_time) ? 'timer--finishing' : '' ?>">
+                    <?=get_time_to_timer($end_time) ?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?=esc_strong($price)?></span>
+                        <span class="lot-item__cost"><?=esc_strong($bet_sum)?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= esc_strong($price + $bet_step)?></span>
+                        Мин. ставка <span><?= esc_strong($bet_sum + $bet_step)?></span>
                     </div>
                 </div>
                 <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">

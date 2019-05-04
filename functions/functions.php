@@ -88,7 +88,7 @@ function get_categories () : array
  */
 function get_lots() : array
 {
-    $sql = 'SELECT img_url, category_id, l.name, price, l.id, c.NAME FROM lots l '
+    $sql = 'SELECT img_url, category_id, l.name, price, l.id, c.NAME as category_name FROM lots l '
         . 'JOIN categories c ON l.category_id = c.id';
     $result = mysqli_query(get_link(), $sql);
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -101,10 +101,13 @@ function get_lots() : array
 function get_lot_by_id(int $id)
 {
     if (isset($id)) {
-        $sql = "SELECT img_url, l.name, category_id, description, price, bet_step, c.NAME FROM lots l JOIN categories c ON l.category_id = c.id WHERE l.id = '{$id}'";
+        $sql = "SELECT end_time, img_url, l.name, category_id, b.bet_sum, description, price, bet_step, c.NAME as category_name FROM lots l "
+        . "JOIN categories c ON l.category_id = c.id "
+        . "LEFT JOIN bets b ON l.id = b.id "
+        . "WHERE l.id = '{$id}'";
         $result = mysqli_query(get_link(), $sql);
         $lots = mysqli_fetch_array($result, MYSQLI_ASSOC);
         return $lots;
     }
-    header("Status: 404 Not Found");
+    array ();
 }
