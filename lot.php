@@ -3,13 +3,18 @@ require_once ('functions\helpers.php');
 require_once ('functions\functions.php');
 require_once ('data.php');
 $categories = get_categories();
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    print_error('Идентификатор лота не передан');
+
+}
 $lot = get_lot_by_id(intval($_GET['id']));
 
-if (is_null($lot) OR empty($_GET['id'])){
-    http_response_code(404);
-    $content = require_once ('pages\404.html');
-    print $content;
+if (is_null($lot)) {
+    print_error('Лот с этим идентификатором не найден');
 }
+
+
 
     $content = include_template('lot.php', [
         'lot_name' => $lot['name'],

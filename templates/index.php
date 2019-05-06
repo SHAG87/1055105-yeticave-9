@@ -29,8 +29,8 @@
                             <span class="lot__amount">Стартовая цена <?=esc($lot['price'])?> </span>
                             <span class="lot__cost">Цена <?=format_sum(esc($lot['price']))?></span>
                         </div>
-                        <div class="lot__timer timer <?=last_hour("tomorrow midnight") ? 'timer--finishing' : '' ?>">
-                            <?=get_time_to_timer("tomorrow midnight") ?>
+                        <div class="lot__timer timer <?=is_last_hour($lot['end_time']) ? 'timer--finishing' : '' ?>">
+                            <?=get_time_to_timer($lot['end_time']) ?>
                         </div>
                     </div>
                 </div>

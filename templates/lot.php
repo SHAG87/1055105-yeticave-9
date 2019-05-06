@@ -10,7 +10,7 @@
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
-                <div class="lot__timer timer <?=last_hour($end_time) ? 'timer--finishing' : '' ?>">
+                <div class="lot__timer timer <?=is_last_hour($end_time) ? 'timer--finishing' : '' ?>">
                     <?=get_time_to_timer($end_time) ?>
                 </div>
                 <div class="lot-item__cost-state">
