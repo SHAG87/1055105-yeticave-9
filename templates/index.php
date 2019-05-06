@@ -22,15 +22,15 @@
                     <img src="<?=esc_strong($lot['img_url'])?>" width="350" height="260" alt="">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?=esc($lot['NAME'])?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=esc_strong($lot['name'])?></a></h3>
+                    <span class="lot__category"><?=esc($lot['category_name'])?></span>
+                    <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$lot['id']?>" ><?=esc_strong($lot['name'])?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена <?=esc($lot['price'])?> </span>
                             <span class="lot__cost">Цена <?=format_sum(esc($lot['price']))?></span>
                         </div>
-                        <div class="lot__timer timer <?=last_hour("tomorrow midnight") ? 'timer--finishing' : '' ?>">
-                            <?=get_time_to_timer("tomorrow midnight") ?>
+                        <div class="lot__timer timer <?=is_last_hour($lot['end_time']) ? 'timer--finishing' : '' ?>">
+                            <?=get_time_to_timer($lot['end_time']) ?>
                         </div>
                     </div>
                 </div>

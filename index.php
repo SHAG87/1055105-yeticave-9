@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("Europe/Moscow");
 require_once ('functions\helpers.php');
 require_once ('functions\functions.php');
 require_once ('data.php');
@@ -13,6 +13,7 @@ $content = include_template('index.php', [
 ]);
 
 $layout = include_template('layout.php', [
+        'title' => 'Главная',
         'is_auth' => $is_auth,
         'user_name' => $user_name,
         'content' =>  $content,
