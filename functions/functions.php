@@ -120,10 +120,28 @@ function get_lot_by_id(int $id)
     return [];
 }
 
+/**
+ * При возникновении ошибки 404 отправляем  пользователя на страницу error.php
+ * @param string $text
+ */
 function print_error (string $text)
 {
     http_response_code(404);
     $content = include_template('error.php', ['error' => $text]);
     print($content);
     exit(1);
+}
+
+/**
+ * Добавляем новый лот
+ * @return array
+ */
+function add_lot ($new_lot)
+{
+        $link = get_link();
+        $sql = db_get_prepare_stmt($link, "INSERT INTO lots (start_time , name, category_id, description, price, "
+            . "bet_step, end_time, owner_id) VALUES ([NOW(), ?, ?, ?, ?, ?, ?, ?, 2])", $new_lot);
+        mysqli_stmt_execute($sql);
+        $result=mysqli_stmt_get_result($sql);
+        return $result;
 }
