@@ -136,12 +136,97 @@ function print_error (string $text)
  * Добавляем новый лот
  * @return array
  */
-function add_lot ($new_lot)
+function add_lot ()
 {
         $link = get_link();
         $sql = db_get_prepare_stmt($link, "INSERT INTO lots (start_time , name, category_id, description, price, "
-            . "bet_step, end_time, owner_id) VALUES ([NOW(), ?, ?, ?, ?, ?, ?, ?, 2])", $new_lot);
+            . "bet_step, end_time, img-url, owner_id) VALUES "
+            . "([NOW(), $_POST['lot-name'], $_POST['category'], $_POST['message'], $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_POST['lot-img'], 2])";
         mysqli_stmt_execute($sql);
         $result=mysqli_stmt_get_result($sql);
         return $result;
+}
+
+/**
+ * Проверка достоверности данных, для формы добавления лота
+ */
+function validate_form_add ()
+{
+    //пустой массив, в него будем собирать ошибки
+    $errors = [];
+
+    /*добавляем сообщения об ошибке*/
+
+    //Проверяем название лота. Функция empty мне не подошла, тк если я напишу вначале имени 0 она выдаст false
+    if (strlen($_POST['lot-name']) ==  0) {
+        $errors['lot-name'] = 'Необходимо ввести название Вашего Лота';
+    }
+
+    //Проверяем, выбрал ли пользователь категорию!
+    if (empty($_POST['category'])) {
+        $errors['category'] = 'Необходимо выбрать категорию';
+    }
+
+    // Проверяем написал ли пользователь описание
+    if (strlen($_POST['message']) == 0) {
+        $errors['message'] = 'Расскажите хоть что-то';
+    }
+
+    // Проверяем указал ли пользователь стоимость лота
+    //if (!empty($_POST['lot-rate']) && (intval($_POST['lot-rate'])) <= 0) {
+    if (strlen($_POST['lot-rate']) <= 0) {  //не уверен насчёт этой конструкции, но вроде тоже самое
+        $errors['lot-rate'] = 'Введите число > 0';
+    }
+
+    //Проверяем указал ли пользователь минимальный шаг лота
+    //if (!empty($_POST['lot-step']) && (intval($_POST['lot-step'])) <= 0) {
+    if (strlen($_POST['lot-step']) <= 0) {
+        $errors['lot-step'] = 'Введите число > 0';
+    }
+
+    //Проверяем корректность введёной даты
+    if (!empty($_POST['lot-date'])) {
+        if (is_date_valid($_POST['lot-date'])) {
+            $lot_date = strtotime($_POST['lot-date']);
+            $now = strtotime('now');
+            $diff = floor(($lot_date - $now) / 86400);
+            if ($diff < 0) {
+                $errors['lot-date'] = 'Минимальная продолжительность обьявления - 1 день!';
+            }
+        } else {
+            $errors['lot-date'] = 'Пожалуйста, введите дату в формате ГГГГ-ММ-ДД';
+        }
+    }
+
+    //!!!!!!Проверяем добавлен ли файл. Тут нужна помошь, с гитом и с самим добавлением файла
+    if (isset($_FILES['file'])) {
+        $fileName = $_FILES['file']['lot-img'];
+        $filePath = __DIR__ . '/uploads/';
+        $file_url = '/uploads/' . $fileName;
+        move_uploaded_file($_FILES['file']['lot-img'], $filePath . $fileName);
+    } else {
+        $errors['lot-img'] = 'файл не добавлен';
+    }
+
+    return $errors;  //если ниодной ошибки не было вернёт пустой массив
+
+}
+
+// Отображение формы Добавления ЛОТА
+function show_form_add ($errors = []) {
+    //Если переданы ошибки выводим их на экран
+    if ($errors) {
+        print 'Пожалуйста, исправьте ошибки в форме: <ul><li>';
+        print implode('</li><li>', $errors);
+        print '</li></ul>';
+    }
+
+    else {
+        $content = include_template('add.php', [
+            'categories' => $categories,
+            'new_lot' => $new_lot,
+            'lots' => $lots,
+        ]);
+        return $content;
+    }
 }
