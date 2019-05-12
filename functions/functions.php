@@ -136,15 +136,22 @@ function print_error (string $text)
  * Добавляем новый лот
  * @return array
  */
-function add_lot ()
+function add_lot ($new_lot)
 {
         $link = get_link();
-        $sql = db_get_prepare_stmt($link, "INSERT INTO lots (start_time , name, category_id, description, price, "
+        $sql = "INSERT INTO lots (start_time , name, category_id, description, price, "
             . "bet_step, end_time, img-url, owner_id) VALUES "
-            . "([NOW(), $_POST['lot-name'], $_POST['category'], $_POST['message'], $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_POST['lot-img'], 2])";
-        mysqli_stmt_execute($sql);
-        $result=mysqli_stmt_get_result($sql);
-        return $result;
+            . "([NOW(), ?, ?, ?, ?, ?, ?, 2)";
+        $stmt = db_get_prepare_stmt($link, $sql, [
+            $new_lot['category'],
+            $new_lot['message'],
+            $new_lot['lot-rate'],
+            $new_lot['lot-step'],
+            $new_lot['lot-date'],
+            $new_lot['lot-img'],
+        ]);
+        insert($stmt);
+        return;
 }
 
 /**
@@ -197,7 +204,7 @@ function validate_form_add ()
             $errors['lot-date'] = 'Пожалуйста, введите дату в формате ГГГГ-ММ-ДД';
         }
     }
-
+/*
     //!!!!!!Проверяем добавлен ли файл. Тут нужна помошь, с гитом и с самим добавлением файла
     if (isset($_FILES['file'])) {
         $fileName = $_FILES['file']['lot-img'];
@@ -207,7 +214,7 @@ function validate_form_add ()
     } else {
         $errors['lot-img'] = 'файл не добавлен';
     }
-
+*/
     return $errors;  //если ниодной ошибки не было вернёт пустой массив
 
 }
@@ -220,13 +227,21 @@ function show_form_add ($errors = []) {
         print implode('</li><li>', $errors);
         print '</li></ul>';
     }
+}
 
-    else {
-        $content = include_template('add.php', [
-            'categories' => $categories,
-            'new_lot' => $new_lot,
-            'lots' => $lots,
-        ]);
-        return $content;
+/*
+ *  Вставляем скуль запросы , возвращаем id
+ */
+function insert(mysqli_stmt $stmt): ?int
+{
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_affected_rows($stmt);
+    if ($result !== 0) {
+        /*возвращаем id добавленной записи*/
+        return mysqli_stmt_insert_id($stmt);
     }
+    $error = mysqli_error($link);
+    $content = include_template('error.php', ['error' => $error]);
+    print($content);
+    die();
 }
