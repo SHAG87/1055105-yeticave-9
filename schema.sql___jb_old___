@@ -1,3 +1,0 @@
-SELECT l.name, price, img_url FROM lots l
-JOIN categories c ON l.category_id = c.name
-WHERE winner_id IS NULL ORDER BY start_time DESC;

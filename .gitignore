@@ -7,5 +7,7 @@
 *.sublime*
 Thumbs.db
 vendor
-uploads/*
-!uploads/.gitkeep
+uploads/lots/*
+uploads/users/*
+!uploads/lots/.gitkeep
+!uploads/users/.gitkeep

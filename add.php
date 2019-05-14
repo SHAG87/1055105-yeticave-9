@@ -1,26 +1,27 @@
 <?php
-require_once ('functions\helpers.php');
-require_once ('functions\functions.php');
-require_once ('data.php');
-$categories = get_categories();
-$lots = get_lots();
-$new_lot=$_POST;
+require_once('boot.php');
 
+$lot = [];
+$errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //Если функция validate_form_add () возвратит ошибки, то передаём их в отображение формы show_form_add ()
-    if ($form_errors = validate_form_add()) {
-        show_form_add ($form_errors);
-    } else {
-        add_lot($new_lot);
+
+    list($errors, $lot) = check_in_data(['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date']);
+
+    validate_form_add($lot, $errors);
+
+    if (!count($errors)) {
+        $lot['lot-img'] = change_filename('lot-img', DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'lots');
+        $lot_id = add_lot($lot);
+        header("Location: /lot.php?id={$lot_id}");
+
     }
-    } else {
-    show_form_add();
+
 }
 
 $content = include_template('add.php', [
     'categories' => $categories,
-    'new_lot' => $new_lot,
-    'lots' => $lots,
+    'lot' => $lot,
+    'errors' => $errors,
 ]);
 
 $layout = include_template('layout.php', [
