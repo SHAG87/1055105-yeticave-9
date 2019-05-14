@@ -1,3 +1,4 @@
+<main>
 <section class="lot-item container">
     <h2><?=$lot_name?></h2>
     <div class="lot-item__content">
@@ -25,7 +26,7 @@
                 <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">
                     <p class="lot-item__form-item form__item form__item--invalid">
                         <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="text" name="cost" placeholder="12 000">
+                        <input id="cost" type="text" name="cost" placeholder="<?= esc_strong($bet_sum + $bet_step)?>">
                         <span class="form__error">Введите наименование лота</span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
@@ -89,3 +90,4 @@
         </div>
     </div>
 </section>
+</main>

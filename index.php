@@ -1,8 +1,6 @@
 <?php
-date_default_timezone_set("Europe/Moscow");
-require_once ('functions\helpers.php');
-require_once ('functions\functions.php');
-require_once ('data.php');
+
+require_once('boot.php');
 
 $categories = get_categories();
 $lots = get_lots();
