@@ -278,3 +278,31 @@ function insert(mysqli_stmt $stmt): ?int
     }
     die('MYSQL error!');
 }
+
+//добавление нового пользователя
+
+function add_user ($new_user)
+{
+    $link = get_link();
+    $sql = "INSERT INTO users (date_create, email, user_name, password, contact) VALUES "
+        . "(NOW(), ?, ?, ?, ?)";
+    $stmt = db_get_prepare_stmt($link, $sql, [
+        $new_user['email'],
+        $new_user['name'],
+        $new_user ['password'],
+        $new_user['message'],
+    ]);
+
+    return insert($stmt);
+}
+
+/*
+//Проверяем был ли пользователь зарегистрирован ранее по его почте
+
+function check_email($faild_name, &$errors)
+{
+    if (!filter_var($faild_name, FILTER_VALIDATE_EMAIL)) {
+            $errors[$faild_name] = "Пользователь с данным почтовым ящиком был зарегистрирован ранее";
+        }
+}
+*/
