@@ -8,13 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     list($errors, $user) = check_in_data(['email', 'password', 'name', 'message']);
 
+
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Некорректный email';
     }
 
     if (!count($errors)) {
         $user_id = add_user($user);
-        header("Location: pages/login.html");
+        header("Location: pages/login.php");
 
     }
 

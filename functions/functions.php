@@ -306,3 +306,27 @@ function check_email($faild_name, &$errors)
         }
 }
 */
+
+//Проверяем есть ли такой зарегистрированный пользователь
+
+function get_user_by_email($user_email): array
+{
+    $sql_user_by_email = "SELECT * FROM users WHERE email = '$user_email'";
+    $result = fetch_data($sql_user_by_email);
+    return count($result) === 1 ? $result[0] : [];
+}
+
+// Проверяем входные данные для запроса SQL
+function fetch_data(string $sql): array
+{
+    $link = get_link();
+    $stmt = db_get_prepare_stmt($link, $sql);
+    if (!mysqli_stmt_execute($stmt)) {
+        die("Ошибка MySQL: " . mysqli_error($link));
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    if (!$result) {
+        die("Ошибка MySQL: " . mysqli_error($link));
+    }
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}

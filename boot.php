@@ -1,6 +1,14 @@
 <?php
-$is_auth = rand(0, 1);
-$user_name = 'Andrey';
+$is_auth = 0;
+$user_name = '';
+session_start();
+if(isset($_SESSION['user'])) {
+    $user_name = $_SESSION['user']['name'];
+    $is_auth = 1;
+} else {
+    $is_auth = 0;
+    $user_name = '';
+}
 
 define('ROOT_DIR', __DIR__);
 
